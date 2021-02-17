@@ -1,0 +1,27 @@
+#error "You didn't update the sensor definitions!"
+// CHANGE THESE TO MATCH YOUR WIRING, THEN DELETE THE PREVIOUS "#error" LINE
+const int LEYE = 9;
+const int REYE = A1;
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode( LEYE, INPUT );
+  pinMode( REYE, INPUT );
+}
+
+void loop() {
+  if( digitalRead( LEYE ) == CHANGE ){
+    Serial.print("Left changed  ");
+  }else{
+    Serial.print("high ");
+  }
+
+  if( digitalRead( REYE ) == HIGH ){
+    Serial.println("low  ");
+  }else{
+    Serial.println("high ");
+  }
+  
+  delay(1000);
+}
