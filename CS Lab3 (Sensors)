@@ -1,37 +1,27 @@
 const int LEYE = 2;
 const int REYE = 3;
 
-
-void LEYE_Line_isr(){
- Serial.print(“Hit a line “);
- //left motor; sto
-  analogWrite(source_1A, 0);
-  analogWrite(source_2A, 255);
-}
-
-
 void setup() {
   Serial.begin(9600);
-  attachInterrupt( digitalPinToInterrupt(LEYE), ir_isr, RISING);
-  attachInterrupt( digitalPinToInterrupt(REYE), ir_isr, RISING); ////////////////////////
-  attachInterrupt( digitalPinToInterrupt(LEYE), ir_isr, FALLING); ///////////////////////
-  attachInterrupt( digitalPinToInterrupt(REYE), ir_isr, FALLING); //////////////////////
+  //attachInterrupt( digitalPinToInterrupt(LEYE), ir_isr, CHANGE);
+  // attachInterrupt( digitalPinToInterrupt(REYE), ir_isr, CHANGE); ////////////////////////
   pinMode( LEYE, INPUT );
   pinMode( REYE, INPUT );
 }
 
-void loop() {
-  if( digitalRead( LEYE ) == CHANGE ){
-    Serial.print("Left changed  ");
-  }else{
-    Serial.print("high ");
-  }
+int lastL_EyeValue = LOW;
+int lastR_EyeValue = LOW;
 
-  if( digitalRead( REYE ) == HIGH ){
-    Serial.println("low  ");
-  }else{
-    Serial.println("high ");
-  }
-  
-  delay(1000);
+void loop() {
+
+ int L_eyeValue = digitalRead( LEYE );
+ if( L_eyeValue != lastL_EyeValue ){
+ Serial.println("A change!");
+ lastL_EyeValue = L_eyeValue;
+ 
+ int R_eyeValue = digitalRead( REYE );
+ if( ReyeValue != lastR_EyeValue ){
+ Serial.println("A change!");
+ lastR_EyeValue = R_eyeValue;
+ }
 }
