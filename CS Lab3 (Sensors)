@@ -1,58 +1,42 @@
 // Infra red sensors
-const int LEYE = 2; // left IR
-const int REYE = 3; // right IR
+const int LEYE = 2;
+const int REYE = 3;
 
 //left motor
 const int source_1A = 5; // NOTE, ALL OF YOUR LEFT MOTORS WILL BE FACING THE OTHER WAY AROUND 
 //                          IE YOUR 1A WILL BE PIN 6, YOUR 2A WILL BE PIN 5
 const int source_2A = 6;
+
 //right motor
 const int source_3A = 16;
 const int source_4A = 17;
 
-// Left eye hits a line
-void LEYE_Line_isr(){
- Serial.print(“Hit a line “);
- //left motor; stop
+void left_motor_stop(){
  analogWrite(source_1A, 0);
  analogWrite(source_2A, 0);
- delay(1000);
+ delay(100);
 }
 
-// Right eye hits a line
-void REYE_Line_isr(){
- Serial.print(“Hit a line “);
- //right motor; stop
+void right_motor_stop(){
  analogWrite(source_3A, 0);
  analogWrite(source_4A, 0);
- delay(1000);
+ delay(100);
 }
 
-// Left eye detects no line
-void LEYE_NoLine_isr(){
- Serial.print(“No line any more “);
- //left motor; forward drive
+void left_motor_go(){
  analogWrite(source_1A, 0);
  analogWrite(source_2A, 255);
- delay(1000);
+ delay(100);
 }
 
-// Right eye detects no line
-void REYE_NoLine_isr(){
- Serial.print(“No line any more “);
- //right motor; forward drive
+void right_motor_go(){
  analogWrite(source_3A, 0);
  analogWrite(source_4A, 255);
- delay(1000);
+ delay(100);
 }
 
 void forward_drive()
 {
-  pinMode(source_1A, OUTPUT);
-  pinMode(source_2A, OUTPUT);
-  pinMode(source_3A, OUTPUT);
-  pinMode(source_4A, OUTPUT);
-  
   //left motor; forward drive
   analogWrite(source_1A, 0);
   analogWrite(source_2A, 255);
@@ -64,14 +48,46 @@ void forward_drive()
 
 void setup() {
   Serial.begin(9600);
-  attachInterrupt( digitalPinToInterrupt(LEYE), LEYE_Line_isr, RISING);
-  attachInterrupt( digitalPinToInterrupt(REYE), REYE_Line_isr, RISING); 
-  attachInterrupt( digitalPinToInterrupt(LEYE), LEYE_NoLine_isr, FALLING); 
-  attachInterrupt( digitalPinToInterrupt(REYE), REYE_NoLine_isr, FALLING); 
   pinMode( LEYE, INPUT );
   pinMode( REYE, INPUT );
+  pinMode(source_1A, OUTPUT);
+  pinMode(source_2A, OUTPUT);
+  pinMode(source_3A, OUTPUT);
+  pinMode(source_4A, OUTPUT);
 }
 
+int lastL_EyeValue = LOW;
+int lastR_EyeValue = LOW;
+
 void loop() {
-  forward_drive()
+ //forward_drive();
+ 
+ /*int L_eyeValue = digitalRead( LEYE );
+ if( L_eyeValue == lastL_EyeValue) { 
+  Serial.println("same as last time");
+  if (L_eyeValue == HIGH){ // if left eye value was, and still is over white (high), keep driving
+    Serial.println("Left input was and still is high");
+    left_motor_go();
+  }
+ }
+ else if(L_eyeValue == HIGH){ // if value has changed to high, stop the motor and update the last value variable
+ Serial.println("Left eye has changed to high!");
+ left_motor_stop();
+ lastL_EyeValue = L_eyeValue;
+ }*/
+
+ int R_eyeValue = digitalRead( REYE );
+ if( R_eyeValue == lastR_EyeValue) { 
+  Serial.println("same as last time");
+  if (R_eyeValue == HIGH){ // if right eye value was, and still is over white (high), keep driving
+    Serial.println("Right input was and still is high");
+    right_motor_go();
+  }
+ }
+ else if(R_eyeValue == HIGH){ // if value has changed to high, stop the motor and update the last value variable
+ Serial.println("Right eye has changed to high!");
+ right_motor_stop();
+ lastR_EyeValue = R_eyeValue;
+ }
+
 }
