@@ -1,37 +1,77 @@
-const int LEYE = 2;
-const int REYE = 3;
+// Infra red sensors
+const int LEYE = 2; // left IR
+const int REYE = 3; // right IR
 
+//left motor
+const int source_1A = 5; // NOTE, ALL OF YOUR LEFT MOTORS WILL BE FACING THE OTHER WAY AROUND 
+//                          IE YOUR 1A WILL BE PIN 6, YOUR 2A WILL BE PIN 5
+const int source_2A = 6;
+//right motor
+const int source_3A = 16;
+const int source_4A = 17;
 
+// Left eye hits a line
 void LEYE_Line_isr(){
  Serial.print(“Hit a line “);
- //left motor; sto
-  analogWrite(source_1A, 0);
-  analogWrite(source_2A, 255);
+ //left motor; stop
+ analogWrite(source_1A, 0);
+ analogWrite(source_2A, 0);
+ delay(1000);
 }
 
+// Right eye hits a line
+void REYE_Line_isr(){
+ Serial.print(“Hit a line “);
+ //right motor; stop
+ analogWrite(source_3A, 0);
+ analogWrite(source_4A, 0);
+ delay(1000);
+}
+
+// Left eye detects no line
+void LEYE_NoLine_isr(){
+ Serial.print(“No line any more “);
+ //left motor; forward drive
+ analogWrite(source_1A, 0);
+ analogWrite(source_2A, 255);
+ delay(1000);
+}
+
+// Right eye detects no line
+void REYE_NoLine_isr(){
+ Serial.print(“No line any more “);
+ //right motor; forward drive
+ analogWrite(source_3A, 0);
+ analogWrite(source_4A, 255);
+ delay(1000);
+}
+
+void forward_drive()
+{
+  pinMode(source_1A, OUTPUT);
+  pinMode(source_2A, OUTPUT);
+  pinMode(source_3A, OUTPUT);
+  pinMode(source_4A, OUTPUT);
+  
+  //left motor; forward drive
+  analogWrite(source_1A, 0);
+  analogWrite(source_2A, 255);
+
+  //right motor; forward drive
+  analogWrite(source_3A, 0);
+  analogWrite(source_4A, 255);
+}
 
 void setup() {
   Serial.begin(9600);
-  attachInterrupt( digitalPinToInterrupt(LEYE), ir_isr, RISING);
-  attachInterrupt( digitalPinToInterrupt(REYE), ir_isr, RISING); ////////////////////////
-  attachInterrupt( digitalPinToInterrupt(LEYE), ir_isr, FALLING); ///////////////////////
-  attachInterrupt( digitalPinToInterrupt(REYE), ir_isr, FALLING); //////////////////////
+  attachInterrupt( digitalPinToInterrupt(LEYE), LEYE_Line_isr, RISING);
+  attachInterrupt( digitalPinToInterrupt(REYE), REYE_Line_isr, RISING); 
+  attachInterrupt( digitalPinToInterrupt(LEYE), LEYE_NoLine_isr, FALLING); 
+  attachInterrupt( digitalPinToInterrupt(REYE), REYE_NoLine_isr, FALLING); 
   pinMode( LEYE, INPUT );
   pinMode( REYE, INPUT );
 }
 
 void loop() {
-  if( digitalRead( LEYE ) == CHANGE ){
-    Serial.print("Left changed  ");
-  }else{
-    Serial.print("high ");
-  }
-
-  if( digitalRead( REYE ) == HIGH ){
-    Serial.println("low  ");
-  }else{
-    Serial.println("high ");
-  }
-  
-  delay(1000);
+  forward_drive()
 }
