@@ -1,11 +1,21 @@
-#error "You didn't update the sensor definitions!"
-// CHANGE THESE TO MATCH YOUR WIRING, THEN DELETE THE PREVIOUS "#error" LINE
-const int LEYE = 9;
-const int REYE = A1;
+const int LEYE = 2;
+const int REYE = 3;
+
+
+void LEYE_Line_isr(){
+ Serial.print(“Hit a line “);
+ //left motor; sto
+  analogWrite(source_1A, 0);
+  analogWrite(source_2A, 255);
+}
+
 
 void setup() {
   Serial.begin(9600);
-
+  attachInterrupt( digitalPinToInterrupt(LEYE), ir_isr, RISING);
+  attachInterrupt( digitalPinToInterrupt(REYE), ir_isr, RISING); ////////////////////////
+  attachInterrupt( digitalPinToInterrupt(LEYE), ir_isr, FALLING); ///////////////////////
+  attachInterrupt( digitalPinToInterrupt(REYE), ir_isr, FALLING); //////////////////////
   pinMode( LEYE, INPUT );
   pinMode( REYE, INPUT );
 }
