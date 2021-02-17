@@ -16,12 +16,14 @@ void loop() {
 
  int L_eyeValue = digitalRead( LEYE );
  if( L_eyeValue != lastL_EyeValue ){
- Serial.println("A change!");
+ Serial.println("A change from left eye!");
+ delay(1000);
  lastL_EyeValue = L_eyeValue;
- 
+ }
  int R_eyeValue = digitalRead( REYE );
- if( ReyeValue != lastR_EyeValue ){
- Serial.println("A change!");
+ if( R_eyeValue != lastR_EyeValue ){
+ Serial.println("A change from right eye!");
+ delay(1000);
  lastR_EyeValue = R_eyeValue;
  }
 }
