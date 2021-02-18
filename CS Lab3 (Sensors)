@@ -1,4 +1,4 @@
-const int LEYE = 2;
+onst int LEYE = 2;
 const int REYE = 3;
 
 
@@ -10,28 +10,26 @@ const int source_2A = 6;
 const int source_3A = 16;
 const int source_4A = 17;
 
-void left_motor_stop(){
- analogWrite(source_1A, 0);
+void l_motor_back_slow(){
+ analogWrite(source_1A, 50);
  analogWrite(source_2A, 0);
- delay(100); // make this the same length as the delay between sensor if statements in future labs???
+ delay(400);
 }
 
-void right_motor_stop(){
- analogWrite(source_3A, 0);
+void r_motor_back_slow(){
+ analogWrite(source_3A, 50);
  analogWrite(source_4A, 0);
- delay(100);
+ delay(400);
 }
 
-void left_motor_go(){
+void left_motor_forwards(){
  analogWrite(source_1A, 0);
- analogWrite(source_2A, 255);
- delay(100);
+ analogWrite(source_2A, 150);
 }
 
-void right_motor_go(){
+void right_motor_forwards(){
  analogWrite(source_3A, 0);
- analogWrite(source_4A, 255);
- delay(100);
+ analogWrite(source_4A, 150);
 }
 
 void forward_drive()
@@ -60,9 +58,9 @@ int lastR_EyeValue = LOW;
 
 void loop() { 
  int L_eyeValue = digitalRead( LEYE ); // update new value
- // 4 conditions 1- Was high, still is- stay stopped, don't update value
+ // 4 conditions 1- Was high, still is- make motor go v. slowly backwards, don't update value
  //              2- Was high, now low- start motor again, update value
- //              3- Was low, now high- stop motor, update value
+ //              3- Was low, now high- make motor go v. slowly backwards, update value
  //              4- Was low, still low- keep motor going, don't update value
   
  if( L_eyeValue == lastL_EyeValue) {
@@ -71,13 +69,13 @@ void loop() {
   // Condition 1- value was, and still is high (line)
   if (L_eyeValue == HIGH){ 
     //Serial.println("Left eye still over line");
-    left_motor_stop();
+    l_motor_back_slow();
   }
   
   // Condition 4- value was, and still is low (no line)
   else { 
     //Serial.println("Left eye still free");
-    right_motor_go();
+    right_motor_forwards();
   }
  }
 
@@ -86,14 +84,14 @@ void loop() {
   // Condition 3- value has changed to high (line)
   if(L_eyeValue == HIGH){ 
     //Serial.println("Left eye has hit a line");
-    left_motor_stop();
+    l_motor_back_slow();
     lastL_EyeValue = L_eyeValue;
   }
   
   // Condition 2- value has changed to low (no line)
   else { 
     //Serial.println("Left eye no longer over line");
-    left_motor_go();
+    left_motor_forwards();
     lastL_EyeValue = L_eyeValue;
   }
  }
@@ -101,9 +99,9 @@ void loop() {
 ////////////////////////////////////////////////////// Right eye below here
 
  int R_eyeValue = digitalRead( REYE ); // update new value
- // 4 conditions 1- Was high, still is- stay stopped, don't update value
+ // 4 conditions 1- Was high, still is- make motor go v. slowly backwards, don't update value
  //              2- Was high, now low- start motor again, update value
- //              3- Was low, now high- stop motor, update value
+ //              3- Was low, now high- make motor go v. slowly backwards, update value
  //              4- Was low, still low- keep motor going, don't update value
   
  if( R_eyeValue == lastR_EyeValue) {
@@ -112,14 +110,14 @@ void loop() {
   // Condition 1- value was, and still is high (line)
   if (R_eyeValue == HIGH){ 
     Serial.println("Right eye still over line");
-    right_motor_stop();
+    r_motor_back_slow();
     //Serial.println("Exited stopping function");
   }
   
   // Condition 4- value was, and still is low (no line)
   else { 
     Serial.println("Right eye still free");
-    right_motor_go();
+    right_motor_forwards();
     //Serial.println("Exited go function");
   }
  }
@@ -129,14 +127,14 @@ void loop() {
   // Condition 3- value has changed to high (line)
   if(R_eyeValue == HIGH){ 
     Serial.println("Right eye has hit a line");
-    right_motor_stop();
+    r_motor_back_slow();
     lastR_EyeValue = R_eyeValue;
   }
   
   // Condition 2- value has changed to low (no line)
   else { 
     Serial.println("Right eye no longer over line");
-    right_motor_go();
+    right_motor_forwards();
     lastR_EyeValue = R_eyeValue;
   }
  }
