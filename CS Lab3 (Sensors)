@@ -1,4 +1,4 @@
-onst int LEYE = 2;
+const int LEYE = 2;
 const int REYE = 3;
 
 
