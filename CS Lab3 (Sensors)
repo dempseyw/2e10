@@ -13,7 +13,7 @@ const int source_4A = 17;
 void left_motor_stop(){
  analogWrite(source_1A, 0);
  analogWrite(source_2A, 0);
- delay(100);
+ delay(100); // make this the same length as the delay between sensor if statements in future labs???
 }
 
 void right_motor_stop(){
@@ -58,7 +58,7 @@ void setup() {
 int lastL_EyeValue = LOW;
 int lastR_EyeValue = LOW;
 
-void loop() {
+void loop() { 
  int L_eyeValue = digitalRead( LEYE ); // update new value
  // 4 conditions 1- Was high, still is- stay stopped, don't update value
  //              2- Was high, now low- start motor again, update value
@@ -66,18 +66,18 @@ void loop() {
  //              4- Was low, still low- keep motor going, don't update value
   
  if( L_eyeValue == lastL_EyeValue) {
-  Serial.println("Left eye same as last time");
+  //Serial.println("Left eye same as last time");
 
   // Condition 1- value was, and still is high (line)
   if (L_eyeValue == HIGH){ 
-    Serial.println("Left eye still over line");
+    //Serial.println("Left eye still over line");
     left_motor_stop();
   }
   
   // Condition 4- value was, and still is low (no line)
   else { 
-    Serial.println("Left eye still free");
-    left_motor_go();
+    //Serial.println("Left eye still free");
+    right_motor_go();
   }
  }
 
@@ -85,21 +85,21 @@ void loop() {
  else {
   // Condition 3- value has changed to high (line)
   if(L_eyeValue == HIGH){ 
-    Serial.println("Left eye has hit a line");
+    //Serial.println("Left eye has hit a line");
     left_motor_stop();
     lastL_EyeValue = L_eyeValue;
   }
   
   // Condition 2- value has changed to low (no line)
   else { 
-    Serial.println("Left eye no longer over line");
+    //Serial.println("Left eye no longer over line");
     left_motor_go();
     lastL_EyeValue = L_eyeValue;
   }
  }
  
 ////////////////////////////////////////////////////// Right eye below here
-/*
+
  int R_eyeValue = digitalRead( REYE ); // update new value
  // 4 conditions 1- Was high, still is- stay stopped, don't update value
  //              2- Was high, now low- start motor again, update value
@@ -107,18 +107,20 @@ void loop() {
  //              4- Was low, still low- keep motor going, don't update value
   
  if( R_eyeValue == lastR_EyeValue) {
-  Serial.println("same as last time");
+  Serial.println("Left eye same as last time");
 
   // Condition 1- value was, and still is high (line)
   if (R_eyeValue == HIGH){ 
     Serial.println("Right eye still over line");
     right_motor_stop();
+    //Serial.println("Exited stopping function");
   }
   
   // Condition 4- value was, and still is low (no line)
   else { 
     Serial.println("Right eye still free");
     right_motor_go();
+    //Serial.println("Exited go function");
   }
  }
 
@@ -137,5 +139,5 @@ void loop() {
     right_motor_go();
     lastR_EyeValue = R_eyeValue;
   }
- }*/
+ }
 }
