@@ -71,13 +71,13 @@ void loop() {
   // Condition 1- value was, and still is high (line)
   if (L_eyeValue == HIGH){ 
     Serial.println("Left eye still over line");
-    left_motor_go();
+    left_motor_stop();
   }
   
   // Condition 4- value was, and still is low (no line)
   else { 
     Serial.println("Left eye still free");
-    left_motor_stop();
+    left_motor_go();
   }
  }
 
@@ -86,7 +86,6 @@ void loop() {
   // Condition 3- value has changed to high (line)
   if(L_eyeValue == HIGH){ 
     Serial.println("Left eye has hit a line");
-    Serial.println("Left eye HIGH");
     left_motor_stop();
     lastL_EyeValue = L_eyeValue;
   }
@@ -113,13 +112,13 @@ void loop() {
   // Condition 1- value was, and still is high (line)
   if (R_eyeValue == HIGH){ 
     Serial.println("Right eye still over line");
-    right_motor_go();
+    right_motor_stop();
   }
   
   // Condition 4- value was, and still is low (no line)
   else { 
     Serial.println("Right eye still free");
-    right_motor_stop();
+    right_motor_go();
   }
  }
 
