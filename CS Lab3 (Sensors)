@@ -10,28 +10,26 @@ const int source_2A = 6;
 const int source_3A = 16;
 const int source_4A = 17;
 
-void left_motor_stop(){
- analogWrite(source_1A, 0);
+void l_motor_back_slow(){
+ analogWrite(source_1A, 50);
  analogWrite(source_2A, 0);
- delay(100); // make this the same length as the delay between sensor if statements in future labs???
+ delay(400);
 }
 
-void right_motor_stop(){
- analogWrite(source_3A, 0);
+void r_motor_back_slow(){
+ analogWrite(source_3A, 50);
  analogWrite(source_4A, 0);
- delay(100);
+ delay(400);
 }
 
-void left_motor_go(){
+void left_motor_forwards(){
  analogWrite(source_1A, 0);
- analogWrite(source_2A, 255);
- delay(100);
+ analogWrite(source_2A, 150);
 }
 
-void right_motor_go(){
+void right_motor_forwards(){
  analogWrite(source_3A, 0);
- analogWrite(source_4A, 255);
- delay(100);
+ analogWrite(source_4A, 150);
 }
 
 void forward_drive()
@@ -66,18 +64,18 @@ void loop() {
  //              4- Was low, still low- keep motor going, don't update value
   
  if( L_eyeValue == lastL_EyeValue) {
-  //Serial.println("Left eye same as last time");
+  //Serial.println("Left eye same as last time"); // for debugging
 
-  // Condition 1- value was, and still is high (line)
+  // Condition 1- value was, and still is high (line) 
   if (L_eyeValue == HIGH){ 
-    //Serial.println("Left eye still over line");
-    left_motor_stop();
+    //Serial.println("Left eye still over line"); // for debugging
+    l_motor_back_slow();
   }
   
   // Condition 4- value was, and still is low (no line)
   else { 
-    //Serial.println("Left eye still free");
-    right_motor_go();
+    //Serial.println("Left eye still free"); // for debugging
+    right_motor_forwards();
   }
  }
 
@@ -85,15 +83,15 @@ void loop() {
  else {
   // Condition 3- value has changed to high (line)
   if(L_eyeValue == HIGH){ 
-    //Serial.println("Left eye has hit a line");
-    left_motor_stop();
+    //Serial.println("Left eye has hit a line"); // for debugging
+    l_motor_back_slow();
     lastL_EyeValue = L_eyeValue;
   }
   
   // Condition 2- value has changed to low (no line)
   else { 
-    //Serial.println("Left eye no longer over line");
-    left_motor_go();
+    Serial.println("Left eye no longer over line"); // for debugging
+    left_motor_forwards();
     lastL_EyeValue = L_eyeValue;
   }
  }
@@ -107,19 +105,19 @@ void loop() {
  //              4- Was low, still low- keep motor going, don't update value
   
  if( R_eyeValue == lastR_EyeValue) {
-  Serial.println("Left eye same as last time");
+  Serial.println("Left eye same as last time"); // for debugging
 
   // Condition 1- value was, and still is high (line)
   if (R_eyeValue == HIGH){ 
-    Serial.println("Right eye still over line");
-    right_motor_stop();
+    Serial.println("Right eye still over line"); // for debugging
+    r_motor_back_slow();
     //Serial.println("Exited stopping function");
   }
   
   // Condition 4- value was, and still is low (no line)
   else { 
-    Serial.println("Right eye still free");
-    right_motor_go();
+    Serial.println("Right eye still free"); // for debugging
+    right_motor_forwards();
     //Serial.println("Exited go function");
   }
  }
@@ -128,15 +126,15 @@ void loop() {
  else {
   // Condition 3- value has changed to high (line)
   if(R_eyeValue == HIGH){ 
-    Serial.println("Right eye has hit a line");
-    right_motor_stop();
+    Serial.println("Right eye has hit a line"); // for debugging
+    r_motor_back_slow();
     lastR_EyeValue = R_eyeValue;
   }
   
   // Condition 2- value has changed to low (no line)
   else { 
-    Serial.println("Right eye no longer over line");
-    right_motor_go();
+    Serial.println("Right eye no longer over line"); // for debugging
+    right_motor_forwards();
     lastR_EyeValue = R_eyeValue;
   }
  }
